@@ -6,12 +6,13 @@ const app = express();
 
 // Set db
 require('./data/reddit-db');
+require('./controllers/post.js')(app);
 
 // Middleware
 const exphbs  = require('express-handlebars');
 
 // Use Body Parser
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 
 // Add after body parser initialization!
@@ -21,15 +22,6 @@ app.use(express.static('public'));
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-require('./controllers/posts.js')(app);
-
-app.get('/', (req, res) => {
-    res.render('home')
-})
-
-app.get('/posts/new', (req, res) => {
-    res.render('posts-new')
-})
 
 app.listen(3000, () => {
     console.log('Reddit Clone listening on port localhost:3000!');
