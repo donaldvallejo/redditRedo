@@ -13,9 +13,10 @@ app.get('/', (req, res) => {
   })    
 
 app.post('/posts/new', (req, res) => {
+    console.log(req)
     // INSTANTIATE INSTANCE OF POST MODEL
     const post = new Post(req.body);
-
+    console.log(req.body)
     // SAVE INSTANCE OF POST MODEL TO DB
     post.save((err, post) => {
     //   REDIRECT TO THE ROOT

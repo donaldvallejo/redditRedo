@@ -6,7 +6,6 @@ const app = express();
 
 // Set db
 require('./data/reddit-db');
-require('./controllers/post.js')(app);
 
 // Middleware
 const exphbs  = require('express-handlebars');
@@ -23,6 +22,10 @@ app.use(express.static('public'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+require('./controllers/post.js')(app);
+
 app.listen(3000, () => {
     console.log('Reddit Clone listening on port localhost:3000!');
 });
+
+module.exports = app;
