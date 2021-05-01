@@ -23,6 +23,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 require('./controllers/post.js')(app);
+require('./controllers/comments.js')(app);
 
 app.listen(3000, () => {
     console.log('Reddit Clone listening on port localhost:3000!');

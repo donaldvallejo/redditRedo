@@ -12,6 +12,15 @@ app.get('/', (req, res) => {
       })
   })    
 
+app.get("/posts/:id", function(req, res) {
+  // LOOK UP THE POST
+    Post.findById(req.params.id).lean().populate('comments').then((post) => {
+      res.render('posts-show', { post })
+    }).catch((err) => {
+      console.log(err.message)
+    })
+});
+
 app.post('/posts/new', (req, res) => {
     console.log(req)
     // INSTANTIATE INSTANCE OF POST MODEL
@@ -27,17 +36,6 @@ app.get('/posts/new', (req, res) => {
   res.render('posts-new')
 })
 
-app.get("/posts/:id", function(req, res) {
-    // LOOK UP THE POST
-    Post.findById(req.params.id).lean()
-      .then(post => {
-        res.render("posts-show", { post });
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
-  });
-
   // SUBREDDIT
 app.get("/n/:subreddit", function(req, res) {
   Post.find({ subreddit: req.params.subreddit }).lean()
@@ -48,4 +46,5 @@ app.get("/n/:subreddit", function(req, res) {
       console.log(err);
     });
   });
+
 };
