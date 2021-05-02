@@ -2,15 +2,17 @@ const Post = require('../models/post');
 
 module.exports = (app) => {
 
-app.get('/', (req, res) => {
-    Post.find({}).lean()
+  app.get("/", (req, res) => {
+    var currentUser = req.user;
+  
+    Post.find({})
       .then(posts => {
-        res.render('posts-index', { posts });
+        res.render("posts-index", { posts, currentUser });
       })
       .catch(err => {
         console.log(err.message);
-      })
-  })    
+      });
+  });
 
 app.get("/posts/:id", function(req, res) {
   // LOOK UP THE POST
@@ -21,16 +23,18 @@ app.get("/posts/:id", function(req, res) {
     })
 });
 
-app.post('/posts/new', (req, res) => {
-    console.log(req)
-    // INSTANTIATE INSTANCE OF POST MODEL
-    const post = new Post(req.body);
-    // SAVE INSTANCE OF POST MODEL TO DB
-    post.save((err, post) => {
-    //   REDIRECT TO THE ROOT
-        return res.redirect(`/`);
-    })
-}); 
+// CREATE
+app.post("/posts/new", (req, res) => {
+  if (req.user) {
+    var post = new Post(req.body);
+
+    post.save(function(err, post) {
+      return res.redirect(`/`);
+    });
+  } else {
+    return res.status(401); // UNAUTHORIZED
+  }
+});
 
 app.get('/posts/new', (req, res) => {
   res.render('posts-new')
