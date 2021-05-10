@@ -16,20 +16,11 @@ const exphbs  = require('express-handlebars');
 // Use Body Parser
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
-
-// Add after body parser initialization!
 app.use(expressValidator());
-
+app.use(cookieParser());
 app.use(express.static('public'));
-
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-app.use(cookieParser());
-
-
-require('./controllers/post.js')(app);
-require('./controllers/comments.js')(app);
-require('./controllers/auth.js')(app);
 
 var checkAuth = (req, res, next) => {
     console.log("Checking authentication");
@@ -39,11 +30,15 @@ var checkAuth = (req, res, next) => {
       var token = req.cookies.nToken;
       var decodedToken = jwt.decode(token, { complete: true }) || {};
       req.user = decodedToken.payload;
-    }
+    } 
   
     next();
   };
   app.use(checkAuth);
+
+require('./controllers/post.js')(app);
+require('./controllers/comments.js')(app);
+require('./controllers/auth.js')(app);
 
 app.listen(3000, () => {
     console.log('Reddit Clone listening on port localhost:3000!');
