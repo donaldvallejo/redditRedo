@@ -39,6 +39,7 @@ var checkAuth = (req, res, next) => {
 require('./controllers/post.js')(app);
 require('./controllers/comments.js')(app);
 require('./controllers/auth.js')(app);
+require('./controllers/replies.js')(app);
 
 app.listen(3000, () => {
     console.log('Reddit Clone listening on port localhost:3000!');

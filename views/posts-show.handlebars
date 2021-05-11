@@ -6,8 +6,7 @@
 </div>
 
 {{#each post.comments}}
-  <p>{{this.content}}</p>
-  <p class="text-right"><a href="">{{this.author.username}}</a></p>
+  {{> comment comment=this postId=../post._id}}
 {{/each}}
 
   <form action="/posts/{{post._id}}/comments" method="post">
